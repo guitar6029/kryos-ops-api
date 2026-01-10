@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.schemas.operator import OperatorCreate
 
 app = FastAPI()
 
@@ -13,3 +14,7 @@ async def health_check(service: str, verbose: bool = False):
         "status": "ok",
         "verbose": verbose
     }
+
+@app.post("/operators")
+async def create_operator(payload: OperatorCreate):
+    return {"created" : payload}
