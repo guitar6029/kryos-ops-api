@@ -44,9 +44,9 @@ def run_migrations_offline() -> None:
     """
 
     load_dotenv()
-    db_url = os.getenv("DATABASE_URL")
+    db_url = os.getenv("DATABASE_URL_SYNC")
     if not db_url:
-        raise RuntimeError("DATABASE_URL is not set")
+        raise RuntimeError("DATABASE_URL_SYNC is not set")
 
     url = config.set_main_option("sqlalchemy.url", db_url)
     context.configure(
@@ -71,7 +71,7 @@ def run_migrations_online() -> None:
     load_dotenv()
     db_url = os.getenv("DATABASE_URL_SYNC")
     if not db_url:
-        raise RuntimeError("DATABASE_URL is not set")
+        raise RuntimeError("DATABASE_URL_SYNC is not set")
 
     config.set_main_option("sqlalchemy.url", db_url)
 
