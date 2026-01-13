@@ -10,10 +10,6 @@ from app.services.devices import (
     update_device_service,
 )
 
-# TODO
-# schemas
-# and services
-
 router = APIRouter(prefix="/devices", tags=["devices"])
 
 
@@ -52,13 +48,13 @@ async def update_device(
     try:
         return await update_device_service(db, device_id, payload)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 # DELETE , delete a device, based on id
-@router.delete("/{device_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{device_id}")
 async def delete_device(device_id: int, db: AsyncSession = Depends(get_db)):
     try:
-        return await delete_device_service(db, device_id)
+        await delete_device_service(db, device_id)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

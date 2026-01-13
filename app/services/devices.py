@@ -1,7 +1,7 @@
 from app.models.device import Device
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.schemas.device import DeviceCreate
+from app.schemas.device import DeviceCreate, DeviceUpdate
 
 
 # get
@@ -32,10 +32,37 @@ async def create_device_service(db: AsyncSession, payload: DeviceCreate) -> Devi
 
 
 # patch
-async def update_device_service(db: AsyncSession, device_id: int, payload) -> Device:
-    pass
+async def update_device_service(
+    db: AsyncSession, device_id: int, payload: DeviceUpdate
+) -> Device:
+    # first find the device in the table
+    device = await get_device_service(db, device_id)
+    ## if result exists
+    data = payload.model_dump(exclude_unset=True)
+
+    # no patch
+    if not data:
+        return device
+
+    # continue if not { }
+    for key, value in data.items():
+        setattr(device, key, value)
+
+    ## update the row
+    await db.commit()
+
+    # refresh to get updated db state
+    await db.refresh(device)
+
+    return device
 
 
 # delete
-async def delete_device_service(db: AsyncSession, device_id: int):
-    pass
+async def delete_device_service(db: AsyncSession, device_id: int) -> None:
+    # check if exists
+    device = await get_device_service(db, device_id)
+    # delete row
+    await db.delete(device)
+    await db.commit()
+
+    return None
