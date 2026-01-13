@@ -8,7 +8,7 @@ class Operator(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String(255), nullable=False, unique=True, index=True)
     full_name = Column(String(120), nullable=False)
-    role = Column(SQLEnum(OperatorRole), nullable=False, server_default="operator")
+    role = Column(SQLEnum(OperatorRole, name="operator_role"), nullable=False, server_default="operator")
     is_active = Column(Boolean, nullable=False, server_default="true")
 
     created_at = Column(

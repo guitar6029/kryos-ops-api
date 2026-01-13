@@ -5,6 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 from app.db.base import Base
+import app.db.models
+
 
 import os
 from dotenv import load_dotenv
@@ -48,9 +50,9 @@ def run_migrations_offline() -> None:
     if not db_url:
         raise RuntimeError("DATABASE_URL_SYNC is not set")
 
-    url = config.set_main_option("sqlalchemy.url", db_url)
+    config.set_main_option("sqlalchemy.url", db_url)
     context.configure(
-        url=url,
+        url=db_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
