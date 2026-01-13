@@ -1,8 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from app.routers.operators import router as operators_router
 from app.routers.health import router as health_router
+from app.middleware.request_logger import request_logger
 
 app = FastAPI()
+
+
+@app.middleware("http")
+async def _request_logger(request: Request, call_next):
+    return await request_logger(request, call_next)
 
 
 @app.get("/")
