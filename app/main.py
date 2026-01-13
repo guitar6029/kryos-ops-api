@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from app.routers.operators import router as operators_router
 from app.routers.health import router as health_router
+from app.routers.devices import router as devices_router
 from app.middleware.request_logger import request_logger
 
 app = FastAPI()
@@ -23,3 +24,4 @@ async def health_check(service: str, verbose: bool = False):
 
 app.include_router(operators_router)
 app.include_router(health_router)
+app.include_router(devices_router)

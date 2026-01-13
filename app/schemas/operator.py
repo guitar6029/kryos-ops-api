@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from app.types import Clearance
+from app.types.clearance import Clearance
 
 
 class OperatorCreate(BaseModel):
