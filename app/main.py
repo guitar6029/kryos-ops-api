@@ -4,14 +4,27 @@ from app.routers.health import router as health_router
 from app.routers.devices import router as devices_router
 from app.middleware.request_logger import request_logger
 
+# from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
 
+# --- MIDDLEWARE ----
 @app.middleware("http")
 async def _request_logger(request: Request, call_next):
     return await request_logger(request, call_next)
 
 
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+
+## ROUTES ----
 @app.get("/")
 async def root():
     return {"status": "Kryos Ops - ok"}
